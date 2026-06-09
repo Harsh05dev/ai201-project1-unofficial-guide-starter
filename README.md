@@ -247,11 +247,12 @@ embedding weight. The chunker prepends the professor name to every chunk, which 
 *reinforces* this same-professor clustering. The query named a specific course, but cosine similarity
 had no reason to prefer CS643 chunks over CS656 chunks from the same professor.
 
-**What you would change to fix it:** Add **metadata filtering**: when the query names a course (regex
-for `CS\d+`), pass a ChromaDB `where={"course": "CS643"}` filter so retrieval is constrained to that
-course's chunks (and only falls back to all-professor chunks if too few match). This is a listed
-stretch feature (metadata filtering) and directly targets the root cause without changing the
-embedding model.
+**What you would change to fix it (now implemented — see Stretch 1):** Add **metadata filtering**:
+when the query names a course (regex for `CS\d+`), pass a ChromaDB `where={"course": "CS643"}` filter
+so retrieval is constrained to that course's chunks. This is implemented in `retriever.py` / `app.py`
+and verified — filtering `course=CS643` returns only CS643 chunks, eliminating the CS656 networking
+contamination, without changing the embedding model. Hybrid search (Stretch 2) independently helps by
+boosting the exact `CS643` token.
 
 ---
 
@@ -300,17 +301,20 @@ original plan.
 
 ## Query Interface
 
-A **Gradio web UI** (`app.py`), launched with `python app.py` at http://localhost:7860.
+A **Gradio chat web UI** (`app.py`), launched with `python app.py` at http://localhost:7860.
 
-**Input field:** a single textbox — "Your question" — where the user types a plain-language question
-about an NJIT CS professor. Six clickable example questions are provided. Pressing Enter or the **Ask**
-button submits.
+**Input fields:**
+- **Your question** — a textbox for a plain-language question; Enter or **Ask** submits. Follow-up
+  questions are supported (conversational memory).
+- **Search mode** — radio: *Semantic* or *Hybrid (semantic + BM25)*.
+- **Filter by course** — optional dropdown to constrain results to one course.
+- **Min professor rating** — optional slider (0–5) to only consider professors at/above a rating.
+- Five clickable example questions.
 
 **Output fields:**
-- **Answer** — the grounded, generated response.
-- **Retrieved from** — the source files behind the answer, each line showing
-  `filename — Professor (course) [distance]`, so the user can see exactly which reviews informed it
-  (or "(no relevant reviews found)" on a refusal).
+- **Conversation** — a chat panel; each answer is grounded and shows a **Retrieved from** list
+  (`filename — Professor (course) [distance]`), or "(no relevant reviews found)" on a refusal. When a
+  follow-up is rewritten, the answer notes how the question was interpreted.
 
 **Sample interaction transcript:**
 ```
@@ -327,3 +331,63 @@ Retrieved from: • andrew_sohn.txt — Andrew Sohn (CS350)  [distance 0.341]
                 • andrew_sohn.txt — Andrew Sohn (N/A)     [distance 0.401]
                 • andrew_sohn.txt — Andrew Sohn (CS350)  [distance 0.439]
 ```
+
+---
+
+## Stretch Features
+
+All four stretch features are implemented (planned in `planning.md` first). Each was tested on the
+review corpus; results below.
+
+### Stretch 1 — Metadata filtering (`retriever.py`, `app.py`)
+Every chunk stores `professor`, `course`, and numeric `rating` metadata. `retrieve()` accepts
+`course`, `professor`, and `min_rating` filters compiled into a ChromaDB `where` clause; the UI exposes
+a course dropdown + a minimum-rating slider, and the app also auto-detects a course code (`CS\d+`) in
+the question. **This directly fixes the documented failure case:**
+
+| Query: "Do students recommend Cristian Borcea for CS643 Cloud Computing?" | Top-5 sources |
+|---|---|
+| **Unfiltered** | CS643 ×2, **CS656 (networking) ×2**, summary ×1 — wrong course leaks in |
+| **Filtered `course=CS643`** | CS643 ×3 only — no networking contamination |
+
+A `min_rating=4.0` filter on "which professor should I take" returns only James Geller (4.9) and
+Marvin Nakayama (4.3).
+
+### Stretch 2 — Hybrid search: semantic + BM25 (`hybrid.py`)
+A BM25 lexical index over the same chunks is fused with dense semantic ranking via Reciprocal Rank
+Fusion (`rrf_k=60`). Comparison (`python hybrid.py`):
+
+| Query | Semantic-only top-1 | Hybrid top-1 |
+|-------|---------------------|--------------|
+| **"CS644"** (exact course code) | Ravi Varadarajan (CS114) ❌ dist 0.723 | **Chase Wu (CS644)** ✅ |
+| "Hadoop big data" | Chase Wu ✅ | Chase Wu ✅ |
+| "bucket graded can still fail" | Andrew Sohn (CS350) ✅ | Andrew Sohn (CS350) ✅ |
+
+Takeaway: hybrid recovers exact-token queries (course codes, proper nouns) that dense embeddings miss,
+and ties on paraphrase-style queries — the same lexical weakness that caused the failure case.
+
+### Stretch 3 — Chunking strategy comparison (`compare_chunking.py`)
+Per-review chunker vs a naive fixed-size chunker (500 chars / 100 overlap), same model + eval queries.
+Metric: top-1 correct-professor rate and average cosine distance (`python compare_chunking.py`):
+
+| Strategy | Chunks | Top-1 correct | Avg top-1 distance |
+|----------|--------|---------------|--------------------|
+| **Per-review (project)** | 83 | **5 / 5** | **0.321** |
+| Fixed-size (500/100) | 79 | 4 / 5 | 0.456 |
+
+The fixed-size chunker mis-retrieved "Is Ali Mili an easy professor?" → returned a Cristian Borcea
+window, because fixed windows merge review boundaries and blur the embedding. Confirms the planning.md
+hypothesis that opinion-boundary chunks win for review text.
+
+### Stretch 4 — Conversational memory (`generator.py`, `app.py`)
+The UI is a chat panel that keeps history; before retrieval, `rewrite_followup()` rewrites a
+context-dependent follow-up into a standalone query using the last few turns:
+
+| After asking about Andrew Sohn's CS350… | Rewritten query |
+|------------------------------------------|-----------------|
+| "is he a tough grader?" | "Is Andrew Sohn a tough grader?" |
+| "what about his exams?" | "Andrew Sohn CS350 exam difficulty" |
+| (no history) "Is Ali Mili easy?" | unchanged |
+
+This resolves pronouns so the retriever has a professor/course to anchor on instead of an
+unanchored "he".
