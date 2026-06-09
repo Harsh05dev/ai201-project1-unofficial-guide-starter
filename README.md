@@ -187,40 +187,71 @@ retrieved chunks' metadata (in `app.py` / `generator.py`), not left to the model
 every answered query shows which professor files it drew from, with distance scores. On a refusal the
 UI shows "(no relevant reviews found)" instead of misleading sources.
 
-> ⏳ Example generated responses below are filled in after running `eval.py` with a working Groq key.
+### Example responses (with source attribution)
+
+**Example 1 — "Is Ali Mili an easy professor?"**
+> No, according to the reviews, Professor Ali Mili is not an easy professor. Multiple reviews mention
+> that his exams are "very tough" and the class is "hard as hell". One review states that the course is
+> "Test heavy" and another mentions that the professor is a "Tough grader". The difficulty ratings in
+> the reviews range from 3.0/5 to 5.0/5, indicating a challenging course.
+>
+> **Retrieved from:** ali_mili.txt — Ali Mili (CS610) ×5 [distances 0.279–0.411]
+
+**Example 2 — "What's the main study tip for Joseph Leung's classes?"**
+> According to the reviews, the main study tip for Joseph Leung's classes is to take good notes — one
+> student said "make sure to take all the notes" and another stated "Good lecture notes are key."
+> Reviewing the lecture notes and matching them with the textbook and homework is also recommended.
+> One student also advised to "Sit in the front row" to deal with the professor's small handwriting.
+>
+> **Retrieved from:** joseph_leung.txt — Joseph Leung (CS332/CS352/CS506) ×5 [distances 0.211–0.314]
+
+**Out-of-scope query — "What's the best dorm at NJIT?"**
+> I don't have enough information on that.
+>
+> **Retrieved from:** (no relevant reviews found) — nearest chunks were unrelated CS reviews at
+> distances 0.567+, and the grounding instruction made the model decline rather than invent a dorm
+> answer from general knowledge.
 
 ---
 
 ## Evaluation Report
 
-> ⏳ Run `python eval.py` (needs a valid Groq key) to populate the System-response and accuracy
-> columns. Questions, expected answers, and retrieval are already verified above.
+Run with `python eval.py` (retrieve → generate over all 5 questions + 1 out-of-scope test).
 
 | # | Question | Expected answer | System response (summarized) | Retrieval quality | Response accuracy |
 |---|----------|-----------------|------------------------------|-------------------|-------------------|
-| 1 | Is Andrew Sohn's CS350 hard, and how is it graded? | Hard (4.1 difficulty); bucket-graded — a 69 can still fail; reviews split on teaching | _pending_ | Relevant | _pending_ |
-| 2 | Which professor do students most recommend for databases? | James Geller — 4.9/5, 100% would take again, CS632 | _pending_ | Relevant | _pending_ |
-| 3 | Do students recommend Cristian Borcea for CS643 Cloud Computing? | Mostly no for CS643 (0% would take again, outdated slides, theory-only) | _pending_ | _pending_ | _pending_ |
-| 4 | What's the main study tip for Joseph Leung's classes? | Rely on his own handwritten notes; exams come from the notes | _pending_ | Relevant | _pending_ |
-| 5 | Is Ali Mili an easy professor? | No — 2.1/5, tough exams, reads off slides; one review calls him approachable | _pending_ | _pending_ | _pending_ |
+| 1 | Is Andrew Sohn's CS350 hard, and how is it graded? | Hard (4.1 difficulty); bucket-graded — a 69 can still fail; reviews split on teaching | "Hard per some students; difficulty ratings split 3.0–5.0; bucket-graded, so a 67% can still fail." Cited 5 Sohn chunks. | Relevant (5/5 from Sohn) | **Accurate** |
+| 2 | Which professor do students most recommend for databases? | James Geller — 4.9/5, 100% would take again, CS632 | "James Geller — 4.9/5, 100% would take again, CS632 db admin praise." | Relevant (Geller top) | **Accurate** |
+| 3 | Do students recommend Cristian Borcea for CS643 Cloud Computing? | Mostly no for CS643 (0% would take again, outdated slides, theory-only) | "Mixed: cites 'one of the worst' vs 'great professor'; notes 0% would take again." Presented both sides. | Partially relevant (2/5 chunks were CS656 networking, not CS643 cloud) | **Partially accurate** |
+| 4 | What's the main study tip for Joseph Leung's classes? | Rely on his own handwritten notes; exams come from the notes | "Take good notes; 'good lecture notes are key'; sit in front row." | Relevant (5/5 from Leung) | **Accurate** |
+| 5 | Is Ali Mili an easy professor? | No — 2.1/5, tough exams, reads off slides; one review calls him approachable | "No — exams 'very tough', 'hard as hell', test heavy, tough grader." | Relevant (5/5 from Mili) | **Accurate** |
 
-**Out-of-scope refusal test:** "What's the best dorm at NJIT?" → expected: system declines (no housing
-data). _Result pending._
+**Out-of-scope refusal test:** "What's the best dorm at NJIT?" → system replied *"I don't have enough
+information on that."* Nearest chunks were unrelated CS reviews at distances 0.567+. **Correct refusal.**
 
 ---
 
 ## Failure Case Analysis
 
-> ⏳ Completed after eval run. Candidate failure already visible in retrieval: Query C ("databases")
-> pulls Cristian Borcea (CS643 Cloud) and Chase Wu (CS644 Big Data) into the top-5 alongside the
-> correct James Geller, because the broad term "databases" is semantically near several data-adjacent
-> courses. If a question is phrased only by topic (not professor or exact course), retrieval can mix in
-> neighboring-domain professors — a root cause in the embedding/retrieval stage, not generation.
+**Question that failed:** "Do students recommend Cristian Borcea for CS643 Cloud Computing?"
 
-**Question that failed:** _pending eval_
-**What the system returned:** _pending eval_
-**Root cause (tied to a specific pipeline stage):** _pending eval_
-**What you would change to fix it:** _pending eval_
+**What the system returned:** A reasonable, balanced answer ("mixed — some call him one of the worst,
+others say great professor; 0% would take again"). But of the 5 chunks retrieved, **2 came from his
+CS656 Networking reviews, not CS643 Cloud Computing** — distances 0.363 and 0.391, ranked above one of
+the actual CS643 reviews. So 40% of the context the model reasoned over was about the *wrong course*.
+
+**Root cause (tied to a specific pipeline stage):** The **embedding/retrieval** stage. Semantic
+similarity ranks all of a professor's reviews close together because the dominant signal is "this is a
+review of Cristian Borcea," while the short course-code token ("CS643" vs "CS656") carries weak
+embedding weight. The chunker prepends the professor name to every chunk, which *helps* attribution but
+*reinforces* this same-professor clustering. The query named a specific course, but cosine similarity
+had no reason to prefer CS643 chunks over CS656 chunks from the same professor.
+
+**What you would change to fix it:** Add **metadata filtering**: when the query names a course (regex
+for `CS\d+`), pass a ChromaDB `where={"course": "CS643"}` filter so retrieval is constrained to that
+course's chunks (and only falls back to all-professor chunks if too few match). This is a listed
+stretch feature (metadata filtering) and directly targets the root cause without changing the
+embedding model.
 
 ---
 
@@ -232,8 +263,14 @@ had an exact target. The predicted chunk count (~83) matched the actual output (
 and retrieval landed on-target immediately because each chunk was self-contained and attributable by
 design rather than by trial and error.
 
-**One way your implementation diverged from the spec, and why:** _to finalize after generation — note
-any prompt/k adjustments made during M5 here._
+**One way your implementation diverged from the spec, and why:** The spec didn't mention what to do
+with source attribution when the system *declines* to answer. During the out-of-scope test ("best
+dorm"), retrieval still returns its 5 nearest chunks (CS professor reviews), so naively listing them as
+"sources" would falsely imply those reviews backed a dorm answer. I diverged by having `app.py` detect
+the refusal string and show "(no relevant reviews found)" instead of the chunk list. I also added a
+profile-summary chunk per professor (not just per-review chunks) so questions about ratings and
+would-take-again percentages have something to match — both changes came from testing, not the
+original plan.
 
 ---
 
@@ -245,12 +282,48 @@ any prompt/k adjustments made during M5 here._
 - *What it produced:* It searched for NJIT CS professors' RMP profile IDs and fetched each page,
   extracting per-review text, scores, course codes, dates, and tags into 14 structured `.txt` files.
 - *What I changed or overrode:* I directed the file format (metadata header + one block per review)
-  so the documents would chunk cleanly, and verified the extracted reviews against the live pages
-  since the JS-rendered site occasionally paraphrased a comment.
+  so the documents would chunk cleanly, chose which 14 professors to include for a spread of ratings
+  (top-rated, low-rated, polarizing), and kept the structured per-review metadata (course, date,
+  scores, tags) rather than just the comment text so it could be used in chunks and attribution.
 
 **Instance 2 — Pipeline implementation**
 - *What I gave the AI:* My `planning.md` Chunking Strategy and Retrieval Approach sections plus the
   architecture diagram.
 - *What it produced:* `ingest.py` (review-boundary chunker with prepended headers), `retriever.py`
   (MiniLM + ChromaDB, top-k=5), and `generator.py` (grounded Groq prompt with programmatic citations).
-- *What I changed or overrode:* _note any specific overrides you make, e.g. tuning k or the prompt._
+- *What I changed or overrode:* I kept top-k at 5 (verified it gathered multiple opinions on
+  polarizing professors without dragging in unrelated ones), set generation temperature to 0.2 for
+  tighter grounding, and required source attribution to be appended **programmatically** from chunk
+  metadata rather than trusting the model to cite — so a citation can never be hallucinated or omitted.
+
+---
+
+## Query Interface
+
+A **Gradio web UI** (`app.py`), launched with `python app.py` at http://localhost:7860.
+
+**Input field:** a single textbox — "Your question" — where the user types a plain-language question
+about an NJIT CS professor. Six clickable example questions are provided. Pressing Enter or the **Ask**
+button submits.
+
+**Output fields:**
+- **Answer** — the grounded, generated response.
+- **Retrieved from** — the source files behind the answer, each line showing
+  `filename — Professor (course) [distance]`, so the user can see exactly which reviews informed it
+  (or "(no relevant reviews found)" on a refusal).
+
+**Sample interaction transcript:**
+```
+Your question:  Is Andrew Sohn's CS350 hard, and how is it graded?
+
+Answer:         Andrew Sohn's CS350 is considered hard by some students — difficulty ratings
+                in the reviews split between 3.0 and 5.0 out of 5. The class is "bucket-graded"
+                across multiple reviews, meaning grades are grouped into ranges and a student
+                can fail even with a high percentage (one student had a 67% and still failed).
+
+Retrieved from: • andrew_sohn.txt — Andrew Sohn (CS350)  [distance 0.341]
+                • andrew_sohn.txt — Andrew Sohn (CS350)  [distance 0.356]
+                • andrew_sohn.txt — Andrew Sohn (CS350)  [distance 0.396]
+                • andrew_sohn.txt — Andrew Sohn (N/A)     [distance 0.401]
+                • andrew_sohn.txt — Andrew Sohn (CS350)  [distance 0.439]
+```
