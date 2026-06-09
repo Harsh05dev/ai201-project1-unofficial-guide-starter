@@ -38,6 +38,12 @@ def _parse_course(bracket_line):
     return match.group(1).strip() if match else "N/A"
 
 
+def _parse_rating(header_text):
+    """Pull the overall rating (e.g. 2.1 from 'Overall rating: 2.1/5') as a float."""
+    match = re.search(r"Overall rating:\s*([\d.]+)\s*/\s*5", header_text)
+    return float(match.group(1)) if match else 0.0
+
+
 def chunk_document(filename, text):
     """Split one professor's document into chunks with metadata.
 
@@ -52,6 +58,7 @@ def chunk_document(filename, text):
         header, body = text, ""
 
     professor = _parse_professor(header)
+    rating = _parse_rating(header)
 
     # 1) Profile-summary chunk (rating, would-take-again, difficulty, courses).
     summary = header.strip()
@@ -63,6 +70,7 @@ def chunk_document(filename, text):
                 "professor": professor,
                 "course": "N/A",
                 "type": "summary",
+                "rating": rating,
             },
         })
 
@@ -87,6 +95,7 @@ def chunk_document(filename, text):
                     "professor": professor,
                     "course": course,
                     "type": "review",
+                    "rating": rating,
                 },
             })
 

@@ -69,14 +69,32 @@ def ensure_index():
     return count
 
 
-def retrieve(query, k=N_RESULTS):
+def _build_where(course=None, professor=None, min_rating=None):
+    """Build a ChromaDB `where` clause from optional metadata filters (Stretch 1)."""
+    clauses = []
+    if course:
+        clauses.append({"course": {"$eq": course}})
+    if professor:
+        clauses.append({"professor": {"$eq": professor}})
+    if min_rating:
+        clauses.append({"rating": {"$gte": float(min_rating)}})
+    if not clauses:
+        return None
+    return clauses[0] if len(clauses) == 1 else {"$and": clauses}
+
+
+def retrieve(query, k=N_RESULTS, course=None, professor=None, min_rating=None):
     """Return the top-k most relevant chunks for a query.
 
-    Each result is a dict: {"text", "source", "professor", "course", "distance"}.
+    Optional metadata filters (Stretch 1 — metadata filtering) constrain the search
+    to a course, a professor, and/or a minimum overall rating before ranking by
+    semantic similarity. Each result is a dict:
+    {"text", "source", "professor", "course", "rating", "distance"}.
     """
     collection = _client().get_collection(CHROMA_COLLECTION)
     query_embedding = get_model().encode([query]).tolist()
-    res = collection.query(query_embeddings=query_embedding, n_results=k)
+    where = _build_where(course, professor, min_rating)
+    res = collection.query(query_embeddings=query_embedding, n_results=k, where=where)
 
     results = []
     docs = res["documents"][0]
@@ -88,9 +106,29 @@ def retrieve(query, k=N_RESULTS):
             "source": meta.get("source", "unknown"),
             "professor": meta.get("professor", "unknown"),
             "course": meta.get("course", "N/A"),
+            "rating": meta.get("rating", 0.0),
             "distance": dist,
         })
     return results
+
+
+def list_courses():
+    """Distinct course codes in the index (for the UI filter dropdown)."""
+    try:
+        metas = _client().get_collection(CHROMA_COLLECTION).get()["metadatas"]
+    except Exception:
+        return []
+    courses = {m.get("course", "N/A") for m in metas if m.get("course", "N/A") != "N/A"}
+    return sorted(courses)
+
+
+def list_professors():
+    """Distinct professor names in the index (for the UI filter dropdown)."""
+    try:
+        metas = _client().get_collection(CHROMA_COLLECTION).get()["metadatas"]
+    except Exception:
+        return []
+    return sorted({m.get("professor", "unknown") for m in metas})
 
 
 if __name__ == "__main__":
