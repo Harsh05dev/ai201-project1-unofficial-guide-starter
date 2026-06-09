@@ -200,3 +200,40 @@ desired output format (answer + cited source files), and the Gradio skeleton. I 
 with a `generate_response()` whose system prompt *enforces* grounding, plus `app.py` wiring retrieval →
 generation → UI with source attribution appended programmatically (not left to the LLM). Verification:
 run the out-of-scope dorm question and confirm the system refuses rather than hallucinating.
+
+---
+
+## Stretch Features
+
+> Planned (per assignment) before implementation. All four stretch features are implemented.
+
+### Stretch 1 — Metadata filtering
+**Plan:** Let the user (or the query itself) constrain retrieval by `professor`, `course`, or minimum
+overall `rating`. ChromaDB supports a `where=` filter on stored metadata. I'll add a `filters` argument
+to `retrieve()` and, in the UI, a course dropdown + a "minimum rating" slider. This *directly fixes the
+documented failure case* (the CS643 query that pulled CS656 chunks): when a course is selected,
+retrieval is limited to that course's chunks. **Why it fits:** our chunks already carry `professor`,
+`course`, and (added for this) a numeric `rating` field, so filtering is a metadata `where` clause, not
+a re-embed.
+
+### Stretch 2 — Hybrid search (semantic + BM25)
+**Plan:** Add lexical BM25 (via `rank-bm25`) over the same chunks and fuse it with the existing
+semantic scores using Reciprocal Rank Fusion (RRF). Compare semantic-only vs hybrid on the eval query
+set. **Why it fits:** course codes ("CS643") and proper nouns ("Hadoop", professor names) are exact
+tokens that lexical search nails but dense embeddings under-weight — the same weakness behind the
+failure case. Hybrid should recover course/keyword precision while keeping semantic recall.
+
+### Stretch 3 — Chunking strategy comparison
+**Plan:** Implement a second chunker — fixed ~500-character windows with 100-char overlap (ignoring
+review boundaries) — and run both chunkers through the same embed → retrieve pipeline on the eval
+queries, reporting average top-1 distance and whether the right professor was retrieved. **Hypothesis:**
+the per-review chunker wins because it respects opinion boundaries; the fixed-size chunker will merge a
+5-star and 1-star review into one window and blur the embedding. A standalone `compare_chunking.py`
+prints the comparison; results go in the README.
+
+### Stretch 4 — Conversational memory
+**Plan:** Support multi-turn follow-ups ("is he a tough grader?" after asking about a professor) by
+keeping the chat history and, before retrieval, rewriting a context-dependent follow-up into a
+standalone query using the LLM + recent turns. The Gradio UI becomes a `gr.Chatbot`. **Why it fits:**
+students ask follow-ups naturally; without rewriting, "is he hard?" has no professor to anchor
+retrieval, so the rewrite step resolves the pronoun from history before searching.
