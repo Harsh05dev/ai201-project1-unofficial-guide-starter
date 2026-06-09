@@ -1,0 +1,22 @@
+Professor: Reza Curtmola
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/1168809
+Overall rating: 3.5/5 | Would take again: 60% | Difficulty: 3.4/5
+Note: Director of the NJIT Cybersecurity Research Center; teaches CS645 (security).
+
+Student reviews:
+
+[Course CS645 | Dec 16, 2020 | Quality 1.0/5 | Difficulty 3.0/5 | Grade B+]
+"Instead of being actually taught something, chose to provide slideware, talk over them, test based upon the ability to memory specific points pulled from materials. I can say this class was a complete waste of time, I learned nothing other than why CS classes are poor and instructors horrible."
+
+[Course CS645 | Dec 23, 2019 | Quality 5.0/5 | Difficulty 3.0/5 | Grade A | Tags: Gives good feedback, Accessible outside class, Tough grader]
+"Recorded lectures are extensive and quite clear. He responds quickly to questions on Canvas. Online office hours are very helpful. He demands clear and thorough answers on projects and tests. I thought he was a bit over the top with some grading. Otherwise, one of the best teachers I've had in NJIT."
+
+[Course CS645 | Dec 21, 2018 | Quality 1.0/5 | Difficulty 4.0/5 | Tags: Lots of homework, Test heavy, Group projects]
+"He didn't follow his criteria. Also he said to learn JavaScript yourselves, which is included in the homework. However, when we presented the homework from our own learning, he accused us of plagiarism. Also there is content he recommends us to use in the homework, however when we used this content, he commented that this content is useless."
+
+[Course CS645 | Dec 2, 2016 | Quality 5.0/5 | Difficulty 4.0/5 | Grade B+ | Tags: Tough grader, Gives good feedback, Group projects]
+"It was a really great class. Professor definitely knows his stuff and has time to attend to questions. He is a really tough grader and hardly awards full points for a question except you know your onions and can go above and beyond. Get ready for projects (individual or group optional). Overall if you are not ready to work for it, forget an A."
+
+[Course CS645 | Sep 24, 2016 | Quality 4.0/5 | Difficulty 3.0/5 | Tags: Participation matters, Lecture heavy]
+"A very good professor. Takes his subject very seriously. Knows what he is teaching. Gives review questions and also provides answers to those questions."

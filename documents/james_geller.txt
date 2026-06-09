@@ -1,0 +1,22 @@
+Professor: James Geller
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/81993
+Overall rating: 4.9/5 | Would take again: 100% | Difficulty: 2.3/5
+Note: teaches CS632 (Database Management). Also Chair of the Department of Data Science.
+
+Student reviews:
+
+[Course CS632 | Dec 18, 2024 | Quality 5.0/5 | Difficulty 2.0/5 | Grade A+ | Tags: Participation matters, Extra credit, Lots of homework]
+"If you want to join or start up your own db company go for it. To gain db knowledge, you will require lots of hw, patience to deal with errors but at the end you can easily get db admin job."
+
+[Course CS632 | Dec 23, 2021 | Quality 5.0/5 | Difficulty 2.0/5 | Grade A | Tags: Lots of homework, Beware of pop quizzes, Amazing lectures]
+"He is one of the best professors in the college. All the lectures are amazing and the class material is also very thorough. His exams are very practical and real-world in nature. I learned a lot under him in such a short span of time."
+
+[Course CS632 | Apr 24, 2019 | Quality 5.0/5 | Difficulty 2.0/5 | Grade A | Tags: Respected, Inspirational, Amazing lectures]
+"Great professor. Great person. Amazing lectures - no need for any text books. He's not afraid to answer 'I don't know' to your question, but would always find the answer later on and communicate it back. He's very caring and good hearted person. Really wants students to succeed. His advice for my further PhD plans was invaluable."
+
+[Course CS632 | Apr 22, 2018 | Quality 5.0/5 | Difficulty 2.0/5 | Tags: Respected, Caring, Extra credit]
+"The class covers a wide range of topics but credit to Prof. Geller for presenting it really really well. He makes things very easy. This is a class that shouldn't be too hard to get a good grade, and more importantly helps you learn something. Definitely consider taking it."
+
+[Course CS632 | Apr 26, 2017 | Quality 4.0/5 | Difficulty 3.0/5 | Grade A | Tags: Gives good feedback, Clear grading criteria, Lecture heavy]
+"I took this class hoping to learn something new in a subject area in which I was already very experienced. The class didn't disappoint. Lots of material I already knew, but I liked the way it was presented, but there was also some useful new information for me."

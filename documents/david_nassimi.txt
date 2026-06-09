@@ -1,0 +1,22 @@
+Professor: David Nassimi
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/134063
+Overall rating: 3.0/5 | Would take again: 30% | Difficulty: 3.6/5
+Note: taught CS435 (Advanced Data Structures and Algorithm Design). Per a 2025 review, Prof. Nassimi has passed away.
+
+Student reviews:
+
+[Course CS435 | Jan 24, 2025 | Quality 3.0/5 | Difficulty 4.0/5 | Grade D | Would take again: Yes | Tags: Tough grader, Participation matters, Inspirational]
+"David Nassimi has unfortunately passed away, for those interested. I had him 2 years ago during 435 and while he was a tough grader he genuinely cared about the degree and he clearly loved teaching students who paid attention. Even if I didn't do well in his class, I will always remember him for being a good man."
+
+[Course CS435 | Dec 23, 2024 | Quality 2.0/5 | Difficulty 4.0/5 | Grade B | Tags: Get ready to read]
+"He sounds like Professor Oaks from Pokemon, but otherwise boring lectures repeating what his modules say word for word. Study those thoroughly, everything you need for this class is in there. The TA is a saint."
+
+[Course CS435 | Dec 21, 2024 | Quality 1.0/5 | Difficulty 5.0/5 | Grade C | Tags: Tough grader, Test heavy, Graded by few things]
+"Avoid this professor. If you can take CS435 with any other professor, please do so. If you take the honors class with Itani/someone else, you are guaranteed to be taught by someone who wants to teach, and actually learn something in the class. Nassimi has lost his passion for teaching, and I concur with the other reviewers: he should retire."
+
+[Course CS435 | Dec 11, 2024 | Quality 3.0/5 | Difficulty 3.0/5 | Grade Incomplete]
+"Unc really needs to retire. He complains about low attendance but he is really boring."
+
+[Course CS435 | Sep 19, 2024 | Quality 1.0/5 | Difficulty 3.0/5 | Tags: Get ready to read]
+"I don't want to sound rude, however Dr. Nassimi should strongly consider retirement. I've literally seen him fall asleep while lecturing. I visited his office hours once and he was surprisingly rude about all of my questions. Seems like he doesn't want to be here anymore if I'm being completely honest."

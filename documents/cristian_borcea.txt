@@ -1,0 +1,22 @@
+Professor: Cristian Borcea
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/489897
+Overall rating: 3.8/5 | Would take again: 0% | Difficulty: 3.5/5
+Note: teaches CS643 Cloud Computing and CS656 Networking.
+
+Student reviews:
+
+[Course CS643 | Oct 22, 2019 | Quality 1.0/5 | Difficulty 2.0/5 | Grade A+ | Tags: Would take again: No, Tough grader]
+"He is one of the worst professor in my NJIT career. He does not do anything and he expects from students to do everything. His slides are 10 years old and his approach towards teaching student is literally boring and there is nothing that he does in class to get students interested in one of the best industry right now (cloud computing)"
+
+[Course CS643 | Jan 2, 2017 | Quality 1.0/5 | Difficulty 3.0/5 | Tags: Tough grader, Graded by few things, Group projects]
+"He teaches only theory and for practical implementation learn on your own. That's not how things work in Job Market. Also emphasis a lot on keywords. If you are good on mugging up words this professor is good for you otherwise it's a Red Flag."
+
+[Course CS643 | Nov 12, 2015 | Quality 5.0/5 | Difficulty 4.0/5 | Grade Incomplete]
+"Great professor. You will learn a lot. Great lectures. Crystal clear and straight to the point answers to student questions. But get ready for a lot of tough work. No free lunches."
+
+[Course CS656 | Jan 14, 2015 | Quality 5.0/5 | Difficulty 2.0/5]
+"Excellent and great professor, if you do not understand Networking, you will understand it very well."
+
+[Course CS656 | May 15, 2014 | Quality 5.0/5 | Difficulty 1.0/5 | Grade A | Attendance: Mandatory]
+"Great professor."

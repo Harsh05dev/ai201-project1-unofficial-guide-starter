@@ -1,0 +1,22 @@
+Professor: Joseph Leung
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/213580
+Overall rating: 2.9/5 | Would take again: 0% | Difficulty: 3.0/5
+Note: Distinguished Professor; teaches CS332 (Principles of OS), CS506, CS352. Reviews repeatedly stress that his own handwritten notes are the key study material.
+
+Student reviews:
+
+[Course CS332 | Dec 19, 2017 | Quality 2.0/5 | Difficulty 2.0/5]
+"He writes so small, students had to walk up every 15min and take pics of the board, this became routine. His lectures don't match the textbook, so studying off the textbook is not the best, but you'll have to do it anyways, just match the lecture notes with the textbook and study from the HW too. Good lecture notes are key. Sit in the front row. GL"
+
+[Course CS506 | Dec 22, 2015 | Quality 4.5/5 | Difficulty 4.0/5 | Grade B+]
+"He is a brilliant man. He makes very hard concepts seem easy. He gives you a copy of his own notes, and everything on the exam comes from the notes. Not saying discrete math is easy, but this is my second time taking it, the previous professor had me hopelessly lost. He is as gentle as a math professor can be. But he doesn't deviate from his notes."
+
+[Course CS332 | May 13, 2014 | Quality 1.0/5 | Difficulty 5.0/5]
+"Literally the worst unorganized professor ever. Unhelpful and rude, no organization for exams. Just tells you to study everything. He is a joke of a professor, he just knows his stuff."
+
+[Course CS352 | Dec 26, 2012 | Quality 4.5/5 | Difficulty 2.0/5]
+"He gives many examples to make class easier, make sure to take all the notes. Exams aren't really hard just go over your notes, in fact they are almost like homework. We never used the book, but I think his way of teaching by solving all the examples on board was a lot better than just reading the book! He also curved the grades well."
+
+[Course CS332 | Oct 24, 2012 | Quality 4.5/5 | Difficulty 3.0/5]
+"He's a great teacher! I think his tests directly reflect what he teaches in class, and he provides very thorough notes. You would never know it, but he can randomly be hilarious."

@@ -1,0 +1,22 @@
+Professor: Marvin Nakayama
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/80111
+Overall rating: 4.3/5 | Would take again: 67% | Difficulty: 3.2/5
+Note: teaches CS341 / CIS341 (Foundations of Computer Science). Posts lecture videos, past exams, and homework on his website.
+
+Student reviews:
+
+[Course CIS341 | Oct 31, 2025 | Quality 5.0/5 | Difficulty 3.0/5 | Tags: Tough grader, Helpful]
+"He is a good professor but the lessons themselves are nothing special. However, he gives SO many external sources like past exams & answer keys, recorded lectures, and practice questions. His grading scale regarding projects is quite harsh but as long as you do the project you should be fine."
+
+[Course CS341 | Dec 25, 2023 | Quality 4.0/5 | Difficulty 4.0/5 | Grade A | Tags: Lecture heavy, Test heavy, Online savvy]
+"Professor Nakayama is a good professor and he does a good job explaining topics. The material before the midterm is easy but after that it gets a lot harder. He posts his lecture videos, previous exams, and homework all on his website. It's a lot of material and if you want to do well don't slack off and stay updated with the lectures and videos."
+
+[Course CIS341 | Nov 1, 2023 | Quality 3.0/5 | Difficulty 5.0/5 | Tags: Tough grader, Lots of homework, Graded by few things]
+"Prof Nakayama is a nice guy, but my main gripe is that when I registered for this class, it was supposed to meet in person twice a week, but was later converted to a hybrid course. This class requires so much more work outside of class time than I was prepared for. He doesn't go into much depth with material during class, and is a strict grader."
+
+[Course CS341 | May 20, 2023 | Quality 5.0/5 | Difficulty 4.0/5 | Grade A | Tags: Tough grader, Caring]
+"One of the best professors at NJIT and a must take. Will upload all lectures online for you to review and attendance is optional. Material is extremely interesting and he is very passionate about it. Projects are fun and easy. Exams are identical to practice exams. Best delivered classes at the school, do the work, learn a lot & get a high grade!"
+
+[Course CS341 | Jan 7, 2023 | Quality 4.0/5 | Difficulty 4.0/5 | Grade C+ | Tags: Tough grader, Clear grading criteria, Lecture heavy]
+"The course content is arduous and he acknowledges that from the beginning. The projects are good buffers for your grade. There is a slight curve, but the grading is done by grouping."

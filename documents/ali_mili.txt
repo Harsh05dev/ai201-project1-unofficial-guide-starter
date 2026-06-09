@@ -1,0 +1,22 @@
+Professor: Ali Mili
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/74719
+Overall rating: 2.1/5 | Would take again: 28% | Difficulty: 3.5/5 | Total ratings: 57
+Note: teaches CS610.
+
+Student reviews:
+
+[Course CS610 | Nov 14, 2024 | Quality 1.0/5 | Difficulty 3.0/5 | Grade F | Tags: Test heavy]
+"Reads off the slides. Botched half of the homeworks as well as the final exam."
+
+[Course CS610 | May 8, 2024 | Quality 4.0/5 | Difficulty 5.0/5 | Grade B+ | Would take again: Yes | Tags: Get ready to read, Lots of homework, Accessible outside class]
+"Professor is approachable!! Class is hard as hell though. You need to study in groups because there is a lot to cover in such a short amount of time. His exams were hard. You can answer 5 out of six questions from which 2 questions are kind of related to the class material and the other 3 are material he went over in live sessions. TA was cool!"
+
+[Course CS610 | Jan 11, 2023 | Quality 1.0/5 | Difficulty 5.0/5 | Grade B | Tags: Tough grader, Graded by few things]
+"Exams were very tough"
+
+[Course CS610 | Nov 29, 2022 | Quality 1.0/5 | Difficulty 3.0/5 | Grade A | Tags: Tough grader]
+"Not a good professor. Test material is rarely gone over in class. Projects must be done in a certain way and cannot even do what is taught in the textbook."
+
+[Course CS610 | Apr 1, 2021 | Quality 3.0/5 | Difficulty 4.0/5 | Would take again: No]
+"The professor is kind and replies to your emails as soon as possible. However, TA's grading is confusing. TA's don't even have any knowledge about the course to solve your doubts."

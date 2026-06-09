@@ -1,0 +1,22 @@
+Professor: Vincent Oria
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/386613
+Overall rating: 2.7/5 | Would take again: 43% | Difficulty: 3.1/5
+Note: teaches CS631 / CIS631 (Data Management System Design) and CS632.
+
+Student reviews:
+
+[Course CS631 | Dec 26, 2025 | Quality 1.0/5 | Difficulty 5.0/5 | Grade D- | Online class | Tags: Tough grader, Test heavy, Graded by few things]
+"This professor is not worth taking. He grades strictly and poorly. For CS631, he only gave 2 exams and 1 project as the course overall and there were no other assignments for grading. I wish we had more assignments to grade to boost up the grades. There were no extra credit opportunities as well."
+
+[Course CIS631 | Apr 17, 2025 | Quality 5.0/5 | Difficulty 4.0/5 | Grade A+]
+"Make sure to do the exercises and home works. They are similar to the exams."
+
+[Course CS632 | Dec 3, 2024 | Quality 5.0/5 | Difficulty 3.0/5 | Grade A | Attendance: Mandatory | Tags: Get ready to read, Inspirational, Respected]
+"Good professor and very kind"
+
+[Course CS631 | Aug 30, 2024 | Quality 1.0/5 | Difficulty 3.0/5 | Online class]
+"The course was disorganized, stressful, and frustrating. The instructor was often late to live sessions, unresponsive to emails, and fell way off track of his syllabus. Only 2 assignments and 2 exams were given, with no chance to recover from poor performance. Grading took weeks. Be prepared to teach yourself."
+
+[Course CS631 | Aug 15, 2023 | Quality 1.0/5 | Difficulty 3.0/5 | Online class]
+"Professor is horrible at communicating and grading. The semester ended over one week ago and no final grades are posted and no assignments have been graded since midterm."

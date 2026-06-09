@@ -1,0 +1,22 @@
+Professor: Chase Wu
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/2251039
+Overall rating: 2.5/5 | Would take again: 17% | Difficulty: 3.3/5
+Note: teaches CS644 (Introduction to Big Data), covering Hadoop. No textbook for the course.
+
+Student reviews:
+
+[Course CS644 | Jan 26, 2023 | Quality 5.0/5 | Difficulty 2.0/5 | Grade A | Tags: Amazing lectures, Lots of homework, Caring]
+"Professor's explanation made all difficult topics very easy. I had zero knowledge about Hadoop before taking his class but learnt a lot about Hadoop from his class. His assignments are neither easy nor too difficult. TA was very helpful. Do the assignments, don't skip class, listen to his lecture and you will be fine."
+
+[Course CS644 | May 14, 2022 | Quality 3.0/5 | Difficulty 3.0/5 | Grade A | Tags: Participation matters, Group projects, Lots of homework]
+"The assignments were way too hard and most of the class struggled to do them. There was very little tutorials on the internet to help us. TA wasn't super helpful with the assignments but at the very least he was lenient in the grading. The class material wasn't too difficult but there is no textbook which makes it hard to study."
+
+[Course CS644 | Jan 27, 2020 | Quality 1.0/5 | Difficulty 3.0/5 | Grade B+]
+"Don't take this class if it's not your core subject. First 2 or 3 lectures he only describes his research center and research works which has nothing much to do with big data. His slides are the biggest disappointment that you will see. You learn hardly anything of big data. He does not curve the grading at all."
+
+[Course CS644 | Dec 23, 2019 | Quality 1.0/5 | Difficulty 2.0/5]
+"Worst professor I have seen till this date. Trust me on this. Slides are trash, have many images of his old organization like he's showing us a tour of it. The subject is too much theory intense and assignments are coding intensive which the professor himself doesn't even know. Waste of time and money. He also does not have transparent grading."
+
+[Course CS644 | May 13, 2019 | Quality 5.0/5 | Difficulty 2.0/5 | Tags: Lots of homework, Clear grading criteria, Caring]
+"Professor Wu is one of the best professors I have taken at NJIT. He deeply knows the subject and cares about his students learning it as well. He gives lots of homework and projects, but he is really understanding and willing to work with the student in case an extension is needed. I would take him again."

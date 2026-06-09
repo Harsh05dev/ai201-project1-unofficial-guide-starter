@@ -1,0 +1,22 @@
+Professor: Andrew Sohn
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/205300
+Overall rating: 3.5/5 | Would take again: 67% | Difficulty: 4.1/5
+Note: teaches CS350 (Introduction to Computer Systems). The class is "bucket-graded."
+
+Student reviews:
+
+[Course CS350 | Mar 13, 2026 | Quality 1.0/5 | Difficulty 5.0/5 | Grade F | Tags: Get ready to read, Lots of homework, Test heavy]
+"I failed this class with Sohn and thought it was because I wasn't smart enough. Retaking it now with another prof made me realize it wasn't me at all. His teaching is super unclear and barely goes into anything. If you actually want to learn the material, avoid this professor."
+
+[Course CS350 | Feb 11, 2026 | Quality 4.0/5 | Difficulty 5.0/5 | Grade D | Tags: Tough grader, Respected, Accessible outside class]
+"He's hard. I knew people graduating that made this their only class and didn't know if they passed till the grades for the final dropped. You could have a 69 in the class and still fail since it's bucket-graded. I did well on the first exam and poor on the last exam and had a 67 at first and failed."
+
+[Course CS350 | Dec 22, 2025 | Quality 5.0/5 | Difficulty 4.0/5 | Grade A | Tags: Participation matters, Lots of homework]
+"I took prof. Sohn Fall 2025, I finished with an A. One thing that stuck with me was how prof. Sohn always smiles and invites questions. I don't know if he is teaching 350 next semester, if he is… I highly recommend his class."
+
+[Course CS350 | Dec 22, 2025 | Quality 3.0/5 | Difficulty 3.0/5 | Grade B | Tags: Get ready to read, Test heavy]
+"Sohn is a nice guy but could definitely improve on his lecturing skills. He does have lock in moments where he can explain a topic with ease, but there are very few of those moments. The class is bucket graded which kinda sucks because you can do upper quartile on the 2 midterms and just above average on the final and get a B. Homeworks are okay."
+
+[Course CS350 | Dec 20, 2025 | Quality 5.0/5 | Difficulty 3.0/5]
+"Dr. Sohn is an amazing professor all in all. I would highly recommend him as the best option for CS350 at NJIT. His lectures are very helpful, in depth, and useful for his exams. He is also extremely considerate and kindhearted, and his TA's were of great help. He has a funny way of saying 'zero' as 'zippo' which made me laugh along."

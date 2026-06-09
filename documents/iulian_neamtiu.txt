@@ -1,0 +1,22 @@
+Professor: Iulian Neamtiu
+Department: Computer Science, New Jersey Institute of Technology (NJIT)
+Source: RateMyProfessors — https://www.ratemyprofessors.com/professor/2276510
+Overall rating: 2.1/5 | Would take again: 34% | Difficulty: 3.2/5
+Note: teaches CS388, CS485, CS673; research in programming languages and smartphone security.
+
+Student reviews:
+
+[Course CS388 | Dec 16, 2025 | Quality 3.0/5 | Difficulty 3.0/5 | Grade A | Tags: Group projects, Clear grading criteria]
+"The professor is clearly knowledgeable in the subject however, when it comes to lectures, they're not particularly useful. All the learning in the course is done through the labs and weekly projects. No midterms and final is presenting your group project. The professor can be passive-aggressive and dismissive sometimes but overall an easy course."
+
+[Course CS673 | Oct 18, 2023 | Quality 2.0/5 | Difficulty 3.0/5 | Grade C]
+"Tests are based on lectures and research literature. Professor is highly knowledgeable in smartphone security but is somewhat unreasonable and will have a shouty tone. As long as you follow EXACTLY what he says, you should be good. Ask questions in class."
+
+[Course CS673 | Jun 8, 2022 | Quality 5.0/5 | Difficulty 4.0/5 | Grade A | Tags: Get ready to read, Clear grading criteria, Inspirational]
+"The professor is very organized and he gives detailed and clear instructions for homework, exams, and project. He has high standards and might have a shouty tone if his expectations are not met. The project scope is large but I personally found it a fun challenge. The exams might be difficult but I wouldn't worry much since his grading is fair."
+
+[Course CS485 | Dec 9, 2021 | Quality 1.0/5 | Difficulty 1.0/5 | Grade C+ | Tags: Get ready to read, So many papers]
+"I don't normally write reviews about professors, but hands down, Professor Neamtiu is one of the worst professors I've had at NJIT. The class is by no means 'hard', but Professor Neamtiu is extremely unreasonable and rude to his students for no reason. When students ask questions, he typically responds with a passive aggressive tone."
+
+[Course CS485 | Dec 3, 2021 | Quality 1.0/5 | Difficulty 3.0/5 | Tags: Lots of homework, Tough grader]
+"By far one of the worst professors in this school which is saying something. Abrasive and completely unhelpful. Gives projects in which he states that he will give no help. His projects are also about topics he does not actually teach in the class at all. Even ignoring simple clarification questions. Completely ridiculous, avoid at all cost."
