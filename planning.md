@@ -1,122 +1,202 @@
 # Project 1 Planning: The Unofficial Guide
 
-> Write this document before you write any pipeline code.
-> Your spec and architecture diagram are what you'll use to direct AI tools (Claude, Copilot, etc.) to generate your implementation — the more specific they are, the more useful the generated code will be.
-> Update the Retrieval Approach and Chunking Strategy sections if you change your approach during implementation.
-> Update this file before starting any stretch features.
+> Written before building the pipeline. Technical sections (chunking, retrieval) are
+> updated if the approach changes during implementation.
 
 ---
 
 ## Domain
 
-<!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
+**NJIT Computer Science professor reviews.** The system answers plain-language questions
+about what CS professors at the New Jersey Institute of Technology are actually like to take —
+teaching style, exam difficulty, grading harshness, workload, and whether students recommend them.
+
+This knowledge is valuable and hard to find through official channels because NJIT's course
+catalog and faculty pages only describe *what* a course covers, never *how* it is taught. The
+catalog won't tell you that a class is "bucket-graded" so you can score a 69 and still fail, that
+a professor "reads off 10-year-old slides," or that "everything on the exam comes from his own
+handwritten notes." That signal lives only in student-written reviews, scattered one professor at
+a time across Rate My Professors, and impossible to query in aggregate ("which professor is the
+best option for CS350?").
 
 ---
 
 ## Documents
 
-<!-- List your specific sources: URLs, subreddit names, forum threads, or file descriptions.
-     Aim for at least 10 sources that together cover different subtopics or perspectives within your domain. -->
+14 documents, one plain-text file per professor, collected from **Rate My Professors**
+(NJIT, school id 668). Each file has a metadata header (overall rating, would-take-again %,
+difficulty, courses taught) followed by individual student reviews. Each review block records the
+course code, date, quality score, difficulty score, grade, and tags, plus the verbatim comment.
+Corpus totals **69 student reviews / ~4,800 words**.
 
-| # | Source | Description | URL or location |
-|---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| #  | Source (professor) | Description | URL or location |
+|----|--------------------|-------------|-----------------|
+| 1  | Ravi Varadarajan | CS114 instructor, low-rated, polarizing | https://www.ratemyprofessors.com/professor/2295889 → `documents/ravi_varadarajan.txt` |
+| 2  | Shantanu Sharma | CS331, mostly positive, "caring" | https://www.ratemyprofessors.com/professor/2724224 → `documents/shantanu_sharma.txt` |
+| 3  | Usman Roshan | CS675/CS677 ML, tough grader | https://www.ratemyprofessors.com/professor/648433 → `documents/usman_roshan.txt` |
+| 4  | Cristian Borcea | CS643 Cloud / CS656 Networking, mixed | https://www.ratemyprofessors.com/professor/489897 → `documents/cristian_borcea.txt` |
+| 5  | Reza Curtmola | CS645 security, mixed, tough grader | https://www.ratemyprofessors.com/professor/1168809 → `documents/reza_curtmola.txt` |
+| 6  | Marvin Nakayama | CS341, highly rated, lots of resources | https://www.ratemyprofessors.com/professor/80111 → `documents/marvin_nakayama.txt` |
+| 7  | James Geller | CS632 Databases, top-rated (4.9) | https://www.ratemyprofessors.com/professor/81993 → `documents/james_geller.txt` |
+| 8  | Ali Mili | CS610, low-rated, tough exams | https://www.ratemyprofessors.com/professor/74719 → `documents/ali_mili.txt` |
+| 9  | Vincent Oria | CS631 Data Mgmt, grading complaints | https://www.ratemyprofessors.com/professor/386613 → `documents/vincent_oria.txt` |
+| 10 | David Nassimi | CS435 Algorithms, polarizing (deceased) | https://www.ratemyprofessors.com/professor/134063 → `documents/david_nassimi.txt` |
+| 11 | Andrew Sohn | CS350 Systems, hard, bucket-graded | https://www.ratemyprofessors.com/professor/205300 → `documents/andrew_sohn.txt` |
+| 12 | Joseph Leung | CS332 OS / CS506, "study his notes" | https://www.ratemyprofessors.com/professor/213580 → `documents/joseph_leung.txt` |
+| 13 | Chase Wu | CS644 Big Data/Hadoop, mixed | https://www.ratemyprofessors.com/professor/2251039 → `documents/chase_wu.txt` |
+| 14 | Iulian Neamtiu | CS388/CS485/CS673, "shouty tone" | https://www.ratemyprofessors.com/professor/2276510 → `documents/iulian_neamtiu.txt` |
+
+Chosen for variety: high-rated (Geller 4.9, Nakayama 4.3), low-rated (Varadarajan 1.7, Mili/Neamtiu 2.1),
+and polarizing (same professor with both 1.0 and 5.0 reviews), spanning core undergrad courses
+(CS114, CS350, CS435) and graduate electives (CS610, CS632, CS643, CS644, CS645).
 
 ---
 
 ## Chunking Strategy
 
-<!-- How will you split documents into chunks?
-     State your chunk size (in tokens or characters), overlap size, and explain why those
-     numbers fit the structure of your documents.
-     A review-heavy corpus warrants different chunking than a long FAQ. -->
+**Chunk size:** One student review per chunk (typically ~300–600 characters), plus one
+"profile summary" chunk per professor (the header lines: rating, would-take-again, difficulty,
+courses). Every chunk is prefixed with a context header — `Professor <Name> (<course>):` — so
+each chunk carries who and what it is about.
 
-**Chunk size:**
+**Overlap:** None (0 characters) between reviews.
 
-**Overlap:**
+**Reasoning:** Reviews are short, self-contained opinions — each one is already an atomic "thought"
+(see the good-chunk example in the milestone). Splitting a review mid-sentence would strip its meaning;
+merging several reviews into one fixed-size chunk would blend a 5-star and a 1-star opinion into a
+muddy embedding that matches no specific query well. So the natural boundary *is* the review.
+Overlap exists to keep a fact from being severed at a boundary, but here boundaries fall *between*
+independent reviews — bleeding one review's text into the next would contaminate, not help, so
+overlap is 0. The risk with per-review chunks is that very short reviews ("Great professor.") have
+no standalone meaning; prepending the `Professor <Name> (<course>):` header fixes that — it becomes
+"Professor James Geller (CS632): Great professor." which is retrievable and attributable on its own.
 
-**Reasoning:**
+**Preprocessing before chunking:** strip the source URL/metadata noise into a dedicated summary
+chunk, drop empty lines, filter out any chunk under ~15 characters.
+
+**Expected final chunk count:** ~83 (69 review chunks + 14 profile summary chunks). Comfortably
+inside the 50–2,000 sane-range from the milestone guidance.
 
 ---
 
 ## Retrieval Approach
 
-<!-- Which embedding model are you using (e.g., all-MiniLM-L6-v2 via sentence-transformers)?
-     How many chunks will you retrieve per query (top-k)?
-     If you were deploying this for real users and cost wasn't a constraint, what tradeoffs
-     would you weigh in choosing a different embedding model — context length, multilingual
-     support, accuracy on domain-specific text, latency? -->
+**Embedding model:** `all-MiniLM-L6-v2` via `sentence-transformers` — runs locally, no API key,
+no rate limits, 384-dim, strong on short-text semantic similarity. Good fit because our chunks are
+short review snippets, exactly the kind of text this model was trained on.
 
-**Embedding model:**
+**Top-k:** 5. With ~83 small chunks and questions that usually target one professor, 5 chunks is
+enough to gather multiple opinions on the same professor (so the answer reflects consensus, not one
+outlier) without dragging in unrelated professors. Too few (k=1–2) risks missing the balancing
+opinion on a polarizing professor; too many (k=10+) pulls in other professors' reviews and pulls the
+LLM off-target.
 
-**Top-k:**
+**Why semantic search works here:** a query like "is this class hard to pass" matches a review
+saying "you could have a 69 and still fail" even with zero shared keywords, because the embedding
+captures meaning, not surface words.
 
-**Production tradeoff reflection:**
+**Production tradeoff reflection:** If deploying for real users with no cost constraint, I'd weigh:
+(a) **domain accuracy** — a larger model (OpenAI `text-embedding-3-large`, Voyage, Cohere v3) embeds
+slang and course codes ("bucket-graded," "CS350") more reliably; (b) **context length** — MiniLM
+truncates at 256 tokens, fine for reviews but limiting for long-form guides, so a longer-context model
+matters if the corpus expands to syllabi/handbooks; (c) **multilingual** — irrelevant now (English-only),
+but relevant if international-student forums were added; (d) **latency & local vs API** — MiniLM is
+local and instant; an API model adds network latency and a per-query bill but offloads compute and
+upgrades automatically. For this project the local model wins on simplicity and zero cost.
 
 ---
 
 ## Evaluation Plan
 
-<!-- List your 5 test questions with their expected correct answers.
-     Questions should be specific enough that you can judge whether the system's response
-     is right or wrong. "What are good dining halls?" is too vague.
-     "What do students say about wait times at [dining hall name] during lunch?" is testable. -->
-
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 | "Is Andrew Sohn's CS350 hard, and how is it graded?" | Yes, hard (difficulty 4.1). It is **bucket-graded**, so you can have a 69 and still fail. Reviews are split — some call his teaching unclear and say avoid; others finished with an A and recommend him. |
+| 2 | "Which professor do students most recommend for databases / CS632?" | **James Geller** — 4.9/5, 100% would take again, "amazing lectures," "one of the best professors in the college." |
+| 3 | "Do students recommend taking Cristian Borcea for CS643 Cloud Computing?" | Mostly **no** for recent CS643 — 0% would take again, complaints about 10-year-old slides and theory-only teaching. (His older CS656 networking reviews are positive — a chance for the system to overstate the negative.) |
+| 4 | "What's the main study tip for Joseph Leung's classes?" | **Rely on his own handwritten notes** — "everything on the exam comes from the notes"; lectures don't match the textbook. |
+| 5 | "Is Ali Mili an easy professor?" | **No** — 2.1/5, only 28% would take again, exams "very tough," "reads off the slides." (One review still calls him approachable, so a fair answer is "no, but approachable.") |
+
+**Out-of-scope refusal test:** "What's the best dorm at NJIT?" → system must decline (no housing data in corpus), not invent an answer.
 
 ---
 
 ## Anticipated Challenges
 
-<!-- What could go wrong? Name at least two specific risks with reasoning.
-     Consider: noisy or inconsistent documents, missing source attribution, off-topic
-     retrieval, chunks that split key information across boundaries. -->
+1. **Polarizing professors → one-sided answers.** Several professors have both 1.0 and 5.0 reviews
+   (Sohn, Borcea, Curtmola). If top-k retrieval happens to pull only the negative (or only the
+   positive) reviews, the LLM will give a confidently lopsided answer that misrepresents the consensus.
+   Mitigation: k=5 to gather multiple opinions; prompt the model to note disagreement.
 
-1.
+2. **Course-code queries can mis-route.** Short tokens like "CS350" or "CS643" carry weak semantic
+   signal, so a query naming a course could retrieve the right *topic* from the wrong *professor*
+   (e.g., another database course). Mitigation: prepend `Professor <Name> (<course>):` to every chunk
+   so the course code is embedded in context, and surface source filenames so mis-routing is visible.
 
-2.
+3. **Thin coverage per professor.** Some files hold only 4–5 reviews. A generic query ("who is a good
+   professor?") with no professor named has little to anchor on and may return a scattered mix.
+
+4. **Extraction noise.** Reviews were pulled from a JavaScript-rendered site via an automated fetch
+   that occasionally lightly paraphrased a comment. Minor wording drift could slightly weaken grounding
+   fidelity; the metadata (scores, tags, dates) is reliable.
 
 ---
 
 ## Architecture
 
-<!-- Draw a diagram of your pipeline showing the five stages:
-     Document Ingestion → Chunking → Embedding + Vector Store → Retrieval → Generation
-     Label each stage with the tool or library you're using.
-     You can use ASCII art, a Mermaid diagram, or embed a sketch as an image.
-     You'll use this diagram as context when prompting AI tools to implement each stage. -->
+```
+┌──────────────────┐   ┌──────────────────┐   ┌─────────────────────────┐
+│ 1. INGESTION     │   │ 2. CHUNKING      │   │ 3. EMBED + VECTOR STORE │
+│ load 14 .txt     │──▶│ split per review │──▶│ all-MiniLM-L6-v2        │
+│ from documents/  │   │ + prof/course    │   │ embeddings →            │
+│ (Python stdlib)  │   │ header, k=0 ovlp │   │ ChromaDB (+ metadata:   │
+│                  │   │                  │   │ source file, prof,      │
+│                  │   │                  │   │ course, chunk #)        │
+└──────────────────┘   └──────────────────┘   └────────────┬────────────┘
+                                                            │
+                                user query                  ▼
+                          ┌───────────────────────────────────────────┐
+                          │ 4. RETRIEVAL                              │
+                          │ embed query → ChromaDB similarity search  │
+                          │ → top-k=5 chunks + source metadata        │
+                          └───────────────────┬───────────────────────┘
+                                              ▼
+                          ┌───────────────────────────────────────────┐
+                          │ 5. GENERATION                             │
+                          │ Groq llama-3.3-70b-versatile              │
+                          │ prompt = grounding instruction + chunks   │
+                          │ → answer + source attribution             │
+                          │ surfaced in Gradio UI                     │
+                          └───────────────────────────────────────────┘
+```
+
+Stage tools: ingestion = Python `os`/`pathlib`; chunking = custom splitter on review boundaries;
+embedding = `sentence-transformers` (`all-MiniLM-L6-v2`); vector store = `chromadb`;
+generation = `groq` (`llama-3.3-70b-versatile`); interface = `gradio`.
 
 ---
 
 ## AI Tool Plan
 
-<!-- For each part of the pipeline below, describe:
-     - Which AI tool you plan to use (Claude, Copilot, ChatGPT, etc.)
-     - What you'll give it as input (which sections of this planning.md, which requirements)
-     - What you expect it to produce
-     - How you'll verify the output matches your spec
-
-     "I'll use AI to help me code" is not a plan.
-     "I'll give Claude my Chunking Strategy section and ask it to implement chunk_text()
-     with my specified chunk size and overlap" is a plan. -->
+Tool used throughout: **Claude (via Claude Code)**.
 
 **Milestone 3 — Ingestion and chunking:**
+Input I'll give Claude: this Documents section (the per-professor `.txt` format with a metadata
+header and `[Course ... ]` review blocks) and this Chunking Strategy section (one review per chunk,
+prof/course header prepended, 0 overlap, profile-summary chunk per professor). I expect it to produce
+`ingest.py` with a `load_documents()` that reads `documents/*.txt` and a `chunk_document()` that splits
+on the `[Course` review markers, prepends the header, emits a summary chunk, and attaches metadata
+(source filename, professor, course). Verification: print 5 chunks and confirm each is self-contained
+and that the total chunk count lands near the predicted ~83.
 
 **Milestone 4 — Embedding and retrieval:**
+Input: this Retrieval Approach section + the architecture diagram. I expect `retriever.py` with
+`embed_and_store()` (embed chunks with `all-MiniLM-L6-v2`, store in ChromaDB with metadata) and
+`retrieve(query, k=5)` returning chunks + sources + distances. Verification: run eval questions 1, 2, 4
+and confirm top results come from the correct professor's file with distances below ~0.5.
 
 **Milestone 5 — Generation and interface:**
+Input: the grounding requirement (answer only from retrieved chunks, decline when unsupported),
+desired output format (answer + cited source files), and the Gradio skeleton. I expect `generator.py`
+with a `generate_response()` whose system prompt *enforces* grounding, plus `app.py` wiring retrieval →
+generation → UI with source attribution appended programmatically (not left to the LLM). Verification:
+run the out-of-scope dorm question and confirm the system refuses rather than hallucinating.
